@@ -1,0 +1,18 @@
+services:
+  backend:
+    container_name: "prompt_maker_backend"
+    image: "python:3.9-bookworm"
+    tty: true
+    working_dir: "/var/www/html/prompt_maker"
+    volumes:
+      - prompt_maker_backend:/var/www/html/prompt_maker
+  frontend:
+    container_name: "prompt_maker_frontend"
+    image: "node:bookworm-slim"
+    tty: true
+    working_dir: "/var/www/html/prompt_maker"
+    volumes:
+      - prompt_maker_frontend:/var/www/html/prompt_maker
+volumes:
+  prompt_maker_backend:
+  prompt_maker_frontend:
