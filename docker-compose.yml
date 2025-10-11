@@ -1,18 +1,20 @@
 services:
   backend:
-    container_name: "prompt_maker_backend"
-    image: "python:3.9-bookworm"
+    container_name: "alchemy_prompt_backend"
+    build:
+      dockerfile: "./backend_dockerfile/backend.Dockerfile"
     tty: true
-    working_dir: "/var/www/html/prompt_maker"
+    working_dir: "/var/www/html"
     volumes:
-      - prompt_maker_backend:/var/www/html/prompt_maker
+      - alchemy_prompt_backend:/var/www/html
   frontend:
-    container_name: "prompt_maker_frontend"
-    image: "node:bookworm-slim"
+    container_name: "alchemy_prompt_frontend"
+    build:
+      dockerfile: "./frontend_dockerfile/frontend.Dockerfile"
     tty: true
-    working_dir: "/var/www/html/prompt_maker"
+    working_dir: "/var/www/html"
     volumes:
-      - prompt_maker_frontend:/var/www/html/prompt_maker
+      - alchemy_prompt_frontend:/var/www/html
 volumes:
-  prompt_maker_backend:
-  prompt_maker_frontend:
+  alchemy_prompt_backend:
+  alchemy_prompt_frontend:
