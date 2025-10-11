@@ -6,7 +6,7 @@ services:
     tty: true
     working_dir: "/var/www/html"
     volumes:
-      - alchemy_prompt_backend:/var/www/html
+      - ./backend_env:/var/www/html
   frontend:
     container_name: "alchemy_prompt_frontend"
     build:
@@ -14,7 +14,4 @@ services:
     tty: true
     working_dir: "/var/www/html"
     volumes:
-      - alchemy_prompt_frontend:/var/www/html
-volumes:
-  alchemy_prompt_backend:
-  alchemy_prompt_frontend:
+      - ./frontend_env:/var/www/html
