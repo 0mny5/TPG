@@ -1,16 +1,14 @@
 services:
   backend:
     container_name: "alchemy_prompt_backend"
-    build:
-      dockerfile: "./backend_dockerfile/backend.Dockerfile"
+    image: python:3.13-slim-bookworm
     tty: true
     working_dir: "/var/www/html"
     volumes:
       - ./backend_env:/var/www/html
   frontend:
     container_name: "alchemy_prompt_frontend"
-    build:
-      dockerfile: "./frontend_dockerfile/frontend.Dockerfile"
+    image: node:bookworm-slim
     tty: true
     working_dir: "/var/www/html"
     volumes:
