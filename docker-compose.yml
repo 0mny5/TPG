@@ -8,9 +8,11 @@ services:
       - ./backend_env:/var/www/html
   frontend:
     container_name: "alchemy_prompt_frontend"
-    image: node:bookworm-slim
+    image: node:25.0.0-bookworm-slim
     tty: true
     working_dir: "/var/www/html"
+    ports:
+      - 8080:3000
     volumes:
       - ./frontend_env:/var/www/html
   db:
