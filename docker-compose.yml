@@ -1,30 +1,22 @@
 services:
   backend:
     container_name: "alchemy_prompt_backend"
-    image: python:3.13-slim-bookworm
+    build:
+      dockerfile: ./backend_infra/backend.Dockerfile
     tty: true
-    working_dir: "/var/www/html"
+    working_dir: "/var/www/html/app"
+    ports:
+      - 8081:8000
     volumes:
       - ./backend_env:/var/www/html
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
   frontend:
     container_name: "alchemy_prompt_frontend"
     image: node:25.0.0-bookworm-slim
     tty: true
-    working_dir: "/var/www/html"
+    working_dir: "/var/www/html/alchemy-prompt"
     ports:
       - 8080:3000
     volumes:
       - ./frontend_env:/var/www/html
-  db:
-    container_name: "alchemy_prompt_db"
-    image: mysql:8.0.43-bookworm
-    tty: true
-    ports:
-      - 3306:3306
-    env_file:
-      - ./.env_mysql
-    volumes:
-      - db_data:/var/lib/mysql
-
-volumes:
-  db_data:
+    command: npm run dev
