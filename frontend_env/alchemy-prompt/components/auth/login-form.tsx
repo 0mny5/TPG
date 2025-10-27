@@ -16,7 +16,7 @@ export function LoginForm() {
     // Simulate Google login
     setTimeout(() => {
       setIsLoading(false)
-      router.push("/create")
+      router.push("/atelier")
     }, 1500)
   }
 
@@ -24,7 +24,7 @@ export function LoginForm() {
     <Card className="border-border/50 bg-card/50 backdrop-blur shadow-xl">
       <CardHeader className="space-y-1">
         <CardTitle className="text-2xl">ログイン</CardTitle>
-        <CardDescription>Googleアカウントでログインして、あなたの魔導書にアクセス</CardDescription>
+        <CardDescription>Googleアカウントでログインして、あなたのアトリエにアクセス</CardDescription>
       </CardHeader>
       <CardContent>
         <Button

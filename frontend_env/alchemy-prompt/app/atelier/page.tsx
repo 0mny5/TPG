@@ -2,7 +2,7 @@ import { PromptCreator } from "@/components/prompt/prompt-creator"
 import { CreateHeader } from "@/components/prompt/create-header"
 import { LandingFooter } from "@/components/landing/landing-footer"
 
-export default function CreatePage() {
+export default function AtelierPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="px-4 sm:px-6 lg:px-8">

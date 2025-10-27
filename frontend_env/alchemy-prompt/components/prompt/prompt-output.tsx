@@ -57,9 +57,9 @@ export function PromptOutput({ prompt, negativePrompt, isGenerating }: PromptOut
           <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/20 border border-primary/30">
             <Sparkles className="h-5 w-5 text-primary alchemy-glow" />
           </div>
-          <CardTitle className="text-2xl">生成されたプロンプト</CardTitle>
+          <CardTitle className="text-2xl">練成されたプロンプト</CardTitle>
         </div>
-        <CardDescription>錬金されたStable Diffusionプロンプト</CardDescription>
+        <CardDescription>練成されたStable Diffusionプロンプト</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         {isGenerating ? (
@@ -69,7 +69,7 @@ export function PromptOutput({ prompt, negativePrompt, isGenerating }: PromptOut
               <div className="absolute inset-0 h-16 w-16 animate-spin rounded-full border-4 border-transparent border-t-primary" />
               <Sparkles className="absolute inset-0 m-auto h-8 w-8 text-primary alchemy-glow" />
             </div>
-            <p className="text-sm text-muted-foreground">ビジョンを錬金中...</p>
+            <p className="text-sm text-muted-foreground">プロンプトを練成中...</p>
           </div>
         ) : prompt ? (
           <>
@@ -137,7 +137,7 @@ export function PromptOutput({ prompt, negativePrompt, isGenerating }: PromptOut
             </div>
             <div>
               <p className="text-sm font-medium text-foreground mb-1">まだプロンプトがありません</p>
-              <p className="text-xs text-muted-foreground">要素を入力して「生成」をクリックしてプロンプトを作成</p>
+              <p className="text-xs text-muted-foreground">要素を入力して「練成」をクリックしてプロンプトを練成</p>
             </div>
           </div>
         )}

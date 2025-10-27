@@ -28,8 +28,8 @@ export function PromptCreator() {
     const currentLimit = hasWatchedAd ? MAX_TOTAL_GENERATIONS : MAX_FREE_GENERATIONS
 
     if (generationCount >= currentLimit) {
-      toast.error("生成回数の上限に達しました", {
-        description: hasWatchedAd ? "本日の生成回数を使い切りました" : "広告を視聴して追加の生成回数を獲得してください",
+      toast.error("練成回数の上限に達しました", {
+        description: hasWatchedAd ? "本日の練成回数を使い切りました" : "広告を視聴して追加の練成回数を獲得してください",
       })
       return
     }
@@ -55,8 +55,8 @@ export function PromptCreator() {
       // Show remaining generations
       const remaining = currentLimit - newCount
       if (remaining > 0) {
-        toast.success("プロンプトを生成しました", {
-          description: `残り${remaining}回生成できます`,
+        toast.success("プロンプトを錬成しました", {
+          description: `残り${remaining}回練成できます`,
         })
       }
     }, 2000)
@@ -65,8 +65,8 @@ export function PromptCreator() {
   const handleAdComplete = () => {
     setHasWatchedAd(true)
     setShowAdModal(false)
-    toast.success("追加生成を解放しました", {
-      description: `合計${MAX_TOTAL_GENERATIONS}回まで生成できます`,
+    toast.success("追加錬成分を解放しました", {
+      description: `合計${MAX_TOTAL_GENERATIONS}回まで練成できます`,
     })
   }
 
@@ -76,13 +76,13 @@ export function PromptCreator() {
   return (
     <div>
       <div className="mb-8 text-center">
-        <h1 className="text-4xl font-bold text-foreground mb-3 text-balance">Prompt Alchemy Workshop</h1>
+        <h1 className="text-4xl font-bold text-foreground mb-3 text-balance">アトリエにようこそ！</h1>
         <p className="text-lg text-muted-foreground text-pretty">
-          Transmute your creative vision into powerful Stable Diffusion prompts
+          あなたのイメージを混ぜ合わせてプロンプトを練成しましょう
         </p>
         <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
           <span className="text-sm font-medium text-foreground">
-            残り生成回数: <span className="text-primary font-bold">{remainingGenerations}</span> / {currentLimit}
+            残り練成回数: <span className="text-primary font-bold">{remainingGenerations}</span> / {currentLimit}
           </span>
         </div>
       </div>

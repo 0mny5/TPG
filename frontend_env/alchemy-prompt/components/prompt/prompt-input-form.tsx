@@ -229,20 +229,20 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
                 <Button
                   type="button"
                   size="sm"
-                  variant={storyMode === "free" ? "default" : "outline"}
-                  className={storyMode === "free" ? "bg-primary text-primary-foreground" : ""}
-                  onClick={() => setStoryMode("free")}
-                >
-                  自由入力
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
                   variant={storyMode === "simple" ? "default" : "outline"}
                   className={storyMode === "simple" ? "bg-primary text-primary-foreground" : ""}
                   onClick={() => setStoryMode("simple")}
                 >
                   簡易入力
+                </Button>
+                <Button
+                  type="button"
+                  size="sm"
+                  variant={storyMode === "free" ? "default" : "outline"}
+                  className={storyMode === "free" ? "bg-primary text-primary-foreground" : ""}
+                  onClick={() => setStoryMode("free")}
+                >
+                  自由入力
                 </Button>
               </div>
             </div>
@@ -401,12 +401,12 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
             {isGenerating ? (
               <>
                 <Sparkles className="mr-2 h-5 w-5 animate-spin" />
-                錬金中...
+                練成中...
               </>
             ) : (
               <>
                 <Sparkles className="mr-2 h-5 w-5" />
-                プロンプトを生成
+                プロンプトを練成
               </>
             )}
           </Button>
