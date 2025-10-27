@@ -16,15 +16,15 @@ export function LandingHero() {
         <div className="mx-auto max-w-4xl text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-sm text-primary">
             <Sparkles className="h-4 w-4" />
-            <span>あなたのアイデアを完璧なプロンプトに変換</span>
+            <span>あなたのアイデアを高品質なプロンプトに変換</span>
           </div>
 
           <h1 className="mb-6 text-4xl font-bold tracking-tight text-foreground sm:text-6xl md:text-7xl text-balance">
-            あなたのビジョンを <span className="text-primary alchemy-glow">Stable Diffusion</span> プロンプトに錬金
+            あなたのイメージを <span className="text-primary alchemy-glow">Stable Diffusion</span> プロンプトに錬成
           </h1>
 
           <p className="mb-10 text-lg text-muted-foreground md:text-xl text-pretty max-w-2xl mx-auto">
-            創造的な方向性、雰囲気、スタイルを入力するだけ。錬金術エンジンがあなたのアイデアをStable
+            創造的な方向性、雰囲気、スタイルを入力するだけ。あなたのアイデアをStable
             Diffusion向けに最適化された高品質な英語プロンプトに変換します。
           </p>
 
@@ -74,9 +74,9 @@ export function LandingHero() {
               </div>
               <div className="mt-6 rounded-lg border border-primary/30 bg-background p-4">
                 <div className="text-xs font-mono text-primary leading-relaxed">
-                  "A mystical fantasy landscape with ethereal atmosphere, floating islands connected by magical bridges,
-                  bioluminescent flora, dramatic volumetric lighting, digital painting style, highly detailed, 8k
-                  resolution, trending on artstation"
+                  "A long-haired young man with a melancholy expression sits on a staircase in a neon-lit night city. Tired from walking, he rests with one knee pulled up, gazing at the heavy overcast skies. Rain from the previous night has left puddles on the ground, reflecting the seductive glow of neon lights.
+BREAK
+anime style, cool atmosphere, night, male character, staircase, neon lights, melancholic expression, cloudy, wet ground, reflective puddles, Pixiv illustration style, high detail, dramatic lighting"
                 </div>
               </div>
             </div>
