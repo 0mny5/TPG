@@ -69,7 +69,7 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
     whatHappened: "",
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
 
     let finalStory = formData.story
@@ -87,6 +87,7 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
 
     onGenerate({ ...formData, story: finalStory })
   }
+
 
   const handleChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }))

@@ -35,31 +35,29 @@ export function PromptCreator() {
     }
 
     setIsGenerating(true)
-
     // Simulate AI generation
-    setTimeout(() => {
-      const { prompt, negativePrompt } = generatePrompts(formData)
-      setGeneratedPrompt(prompt)
-      setGeneratedNegativePrompt(negativePrompt)
-      setIsGenerating(false)
+    const { prompt, negativePrompt } = await generatePrompts(formData)
+    setGeneratedPrompt(prompt)
+    setGeneratedNegativePrompt(negativePrompt)
+    setIsGenerating(false)
 
-      const newCount = generationCount + 1
-      setGenerationCount(newCount)
+    {/*const newCount = generationCount + 1
+    setGenerationCount(newCount)*/}
+    const newCount = 0
 
-      if (newCount === MAX_FREE_GENERATIONS && !hasWatchedAd) {
-        setTimeout(() => {
-          setShowAdModal(true)
-        }, 1000)
-      }
+    if (newCount === MAX_FREE_GENERATIONS && !hasWatchedAd) {
+      setTimeout(() => {
+        setShowAdModal(true)
+      }, 1000)
+    }
 
-      // Show remaining generations
-      const remaining = currentLimit - newCount
-      if (remaining > 0) {
-        toast.success("プロンプトを錬成しました", {
-          description: `残り${remaining}回練成できます`,
-        })
-      }
-    }, 2000)
+    // Show remaining generations
+    const remaining = currentLimit - newCount
+    if (remaining > 0) {
+      toast.success("プロンプトを錬成しました", {
+        description: `残り${remaining}回練成できます`,
+      })
+    }
   }
 
   const handleAdComplete = () => {
@@ -97,14 +95,16 @@ export function PromptCreator() {
   )
 }
 
-function generatePrompts(data: {
+async function generatePrompts(
+data: {
   direction: string
   atmosphere: string
   theme: string
   colors: string
   style: string
   story: string
-}): { prompt: string; negativePrompt: string } {
+},
+): { prompt: string; negativePrompt: string } {
   const parts = []
 
   if (data.direction) parts.push(data.direction)
@@ -123,8 +123,19 @@ function generatePrompts(data: {
     "trending on artstation",
   ]
 
-  const prompt = `${parts.join(", ")}, ${qualityTags.join(", ")}`
+  // FastAPI のエンドポイントを叩く
+  const promise = fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/atelier/create`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      prompt: "example"
+    })}
+    ).then(res => res.json())
+  const [response] = await Promise.all([promise])
 
+  const prompt = `${response.prompt}\nBREAK\n${qualityTags.join(", ")}`
   const negativePrompt =
     "low quality, blurry, distorted, deformed, ugly, bad anatomy, bad proportions, watermark, signature, text, cropped, out of frame, worst quality, low resolution, jpeg artifacts"
 
