@@ -17,34 +17,73 @@ interface PromptInputFormProps {
     atmosphere: string
     theme: string
     colors: string
-    style: string
+    angle: string
     story: string
   }) => void
   isGenerating: boolean
 }
 
 const PRESETS = {
-  direction: ["黄昏の神秘的な森", "未来的なサイバーパンク都市", "山中の古代寺院"],
-  atmosphere: ["幻想的で神秘的", "暗くドラマチック", "明るく陽気"],
-  theme: ["ファンタジー冒険", "SF技術", "歴史叙事詩"],
-  colors: ["深い紫とエメラルドグリーン", "ネオンブルーとホットピンク", "温かいゴールドと豊かなブラウン"],
-  style: [
-    "デジタルペインティング、コンセプトアート",
-    "フォトリアリスティック、シネマティック",
-    "アニメスタイル、鮮やかな色",
+  direction: ["アニメ風", "実写風", "イラスト風", "ファンタジー", "サイバーパンク", "水彩風"],
+  atmosphere: ["可愛い", "クール", "綺麗め", "ダーク", "暖かい", "スチームパンク"],
+  theme: ["人物", "動物", "風景", "小物", "食べ物", "建築"],
+  colors: ["柔らかい光", "ドラマチックな光", "カラフル", "モノトーン", "ゴールデンアワー", "ネオン"],
+  angle: [
+    "バストアップ",
+    "全身",
+    "クローズアップ",
+    "俯瞰",
+    "ローアングル",
+    "背景中心",
   ],
   story5w1h: {
-    what: ["孤独な戦士", "魔法のアーティファクト", "神秘的な生き物", "古代の巻物", "輝くポータル"],
-    when: ["夜明けに", "嵐の最中", "満月の下で", "遠い未来に", "古代に"],
-    where: ["忘れられた寺院で", "浮遊島で", "水晶の洞窟で", "現実の端で", "隠された庭園で"],
-    whatObject: ["伝説の剣", "呪文の本", "神聖な遺物", "謎の鍵", "輝く球体"],
-    how: ["古代の魔法で", "純粋な決意で", "先進技術を使って", "謎を解いて", "仲間の助けで"],
+    what: [
+      "赤い髪のボブカットの少女が",
+      "ふわふわの毛並みをした小さな狐が",
+      "淡い霧が漂う静かな街が",
+      "鮮やかなターコイズのイブニングドレスが",
+      "トースターで綺麗に焼き目をつけられたパンを乗せた皿が",
+      "1000年の歴史を刻んだ西洋の古城が"
+    ],
+    when: [
+      "朝日が差し込み始めた頃",
+      "夕暮れの光が森を薄く照らす頃",
+      "太陽が地平線から顔を出す瞬間に",
+      "ネオンが街に灯り始める夕方に",
+      "温かい光が差し込む午後のキッチンで",
+      "月光が静かに大地を照らす夜更けに"
+    ],
+    where: [
+      "静かな湖畔の木陰で",
+      "木漏れ日の差す細い獣道で",
+      "広大な草原の中央で",
+      "古い石畳の通りの真ん中で",
+      "数多くの食器が整然と並べられた木製カウンターの上に並び",
+      "霧深い丘の上にそびえ立ち"
+    ],
+    whatObject: [
+      "小さな白い花を一輪",
+      "拾ったばかりの赤い木の実を",
+      "ひときわ輝く露をまとった野花を",
+      "小さなクラッチバッグとともに",
+      "暖かい牛乳を注がれたカップと一緒に",
+      "色褪せた石壁と蔦に覆われた塔を"
+    ],
+    how: [
+      "胸の前でそっと包み込むように持ち",
+      "前足で大切そうに抱えながら",
+      "風に揺られながらきらりと輝かせて",
+      "今にも手首を軽やかに振りそうなマネキンが持ち",
+      "湯気を漂わせながら",
+      "夜風にさらされながら静かに佇み"
+    ],
     whatHappened: [
-      "隠された真実を発見する",
-      "古代の力を目覚めさせる",
-      "何世紀も続いた呪いを破る",
-      "別世界への門を開く",
-      "新しい何かに変身する",
+      "慈しむような優しい笑みでこちらを見た",
+      "好奇心に満ちた瞳でこちらを見つめた",
+      "世界が目覚めるような静かな瞬間を作り出した",
+      "静と動を圧倒的な説得力で訴えかける",
+      "誰もが心を落ち着ける午後のひと時を演出する",
+      "まるで眠ったまま息づいているかのような気配を放った",
     ],
   },
 }
@@ -55,7 +94,7 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
     atmosphere: PRESETS.atmosphere[0],
     theme: PRESETS.theme[0],
     colors: PRESETS.colors[0],
-    style: PRESETS.style[0],
+    angle: PRESETS.angle[0],
     story: "",
   })
 
@@ -68,6 +107,24 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
     how: "",
     whatHappened: "",
   })
+
+  const isAll5w1hFilled = () => {
+    return (
+      story5w1h.what.trim() !== "" &&
+      story5w1h.when.trim() !== "" &&
+      story5w1h.where.trim() !== "" &&
+      story5w1h.whatObject.trim() !== "" &&
+      story5w1h.how.trim() !== "" &&
+      story5w1h.whatHappened.trim() !== ""
+    )
+  }
+
+  const isFormValid = () => {
+    if (storyMode === "simple") {
+      return isAll5w1hFilled()
+    }
+    return formData.story.trim() !== ""
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -118,7 +175,7 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
         <form onSubmit={handleSubmit} className="space-y-5">
           <div className="space-y-2">
             <Label className="text-foreground">
-              Direction <span className="text-muted-foreground text-xs">(方向性)</span>
+              方向性 <span className="text-muted-foreground text-xs">(Style Direction)</span>
             </Label>
             <RadioGroup value={formData.direction} onValueChange={(value) => handleChange("direction", value)}>
               <div className="grid grid-cols-3 gap-2">
@@ -139,7 +196,7 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
 
           <div className="space-y-2">
             <Label className="text-foreground">
-              Atmosphere <span className="text-muted-foreground text-xs">(雰囲気)</span>
+              雰囲気 <span className="text-muted-foreground text-xs">(Mood / Atmosphere)</span>
             </Label>
             <RadioGroup value={formData.atmosphere} onValueChange={(value) => handleChange("atmosphere", value)}>
               <div className="grid grid-cols-3 gap-2">
@@ -160,7 +217,7 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
 
           <div className="space-y-2">
             <Label className="text-foreground">
-              Theme <span className="text-muted-foreground text-xs">(主題)</span>
+              主題カテゴリ <span className="text-muted-foreground text-xs">(Main Subject Category)</span>
             </Label>
             <RadioGroup value={formData.theme} onValueChange={(value) => handleChange("theme", value)}>
               <div className="grid grid-cols-3 gap-2">
@@ -181,7 +238,28 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
 
           <div className="space-y-2">
             <Label className="text-foreground">
-              Colors <span className="text-muted-foreground text-xs">(色)</span>
+              構図・視点 <span className="text-muted-foreground text-xs">(Composition / Angle)</span>
+            </Label>
+            <RadioGroup value={formData.angle} onValueChange={(value) => handleChange("angle", value)}>
+              <div className="grid grid-cols-3 gap-2">
+                {PRESETS.angle.map((preset, index) => (
+                  <div key={index}>
+                    <RadioGroupItem value={preset} id={`angle-${index}`} className="peer sr-only" />
+                    <Label
+                      htmlFor={`angle-${index}`}
+                      className="flex cursor-pointer items-center justify-center rounded-md border-2 border-border bg-background px-2 py-3 text-xs hover:bg-accent peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary peer-data-[state=checked]:text-primary-foreground"
+                    >
+                      {preset}
+                    </Label>
+                  </div>
+                ))}
+              </div>
+            </RadioGroup>
+          </div>
+
+          <div className="space-y-2">
+            <Label className="text-foreground">
+              色・光のイメージ <span className="text-muted-foreground text-xs">(Color / Lighting Image)</span>
             </Label>
             <RadioGroup value={formData.colors} onValueChange={(value) => handleChange("colors", value)}>
               <div className="grid grid-cols-3 gap-2">
@@ -200,31 +278,10 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
             </RadioGroup>
           </div>
 
-          <div className="space-y-2">
-            <Label className="text-foreground">
-              Style <span className="text-muted-foreground text-xs">(スタイル)</span>
-            </Label>
-            <RadioGroup value={formData.style} onValueChange={(value) => handleChange("style", value)}>
-              <div className="grid grid-cols-3 gap-2">
-                {PRESETS.style.map((preset, index) => (
-                  <div key={index}>
-                    <RadioGroupItem value={preset} id={`style-${index}`} className="peer sr-only" />
-                    <Label
-                      htmlFor={`style-${index}`}
-                      className="flex cursor-pointer items-center justify-center rounded-md border-2 border-border bg-background px-2 py-3 text-xs hover:bg-accent peer-data-[state=checked]:border-primary peer-data-[state=checked]:bg-primary peer-data-[state=checked]:text-primary-foreground"
-                    >
-                      {preset}
-                    </Label>
-                  </div>
-                ))}
-              </div>
-            </RadioGroup>
-          </div>
-
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <Label className="text-foreground">
-                Story <span className="text-muted-foreground text-xs">(物語)</span>
+                物語 <span className="text-muted-foreground text-xs">(Story)</span>
               </Label>
               <div className="flex gap-2">
                 <Button
@@ -235,15 +292,6 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
                   onClick={() => setStoryMode("simple")}
                 >
                   簡易入力
-                </Button>
-                <Button
-                  type="button"
-                  size="sm"
-                  variant={storyMode === "free" ? "default" : "outline"}
-                  className={storyMode === "free" ? "bg-primary text-primary-foreground" : ""}
-                  onClick={() => setStoryMode("free")}
-                >
-                  自由入力
                 </Button>
               </div>
             </div>
@@ -263,7 +311,7 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
                   <Label className="text-sm text-foreground">何が/誰が？</Label>
                   <div className="flex gap-2">
                     <Input
-                      placeholder="例：孤独な戦士"
+                      placeholder="例：赤い髪のボブカットの少女が"
                       value={story5w1h.what}
                       onChange={(e) => handle5w1hChange("what", e.target.value)}
                       className="bg-background"
@@ -285,7 +333,7 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
                   <Label className="text-sm text-foreground">いつ？</Label>
                   <div className="flex gap-2">
                     <Input
-                      placeholder="例：夜明けに"
+                      placeholder="例：朝日が差し込み始めた頃"
                       value={story5w1h.when}
                       onChange={(e) => handle5w1hChange("when", e.target.value)}
                       className="bg-background"
@@ -307,7 +355,7 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
                   <Label className="text-sm text-foreground">どこで？</Label>
                   <div className="flex gap-2">
                     <Input
-                      placeholder="例：忘れられた寺院で"
+                      placeholder="例：静かな湖畔の木陰で"
                       value={story5w1h.where}
                       onChange={(e) => handle5w1hChange("where", e.target.value)}
                       className="bg-background"
@@ -329,7 +377,7 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
                   <Label className="text-sm text-foreground">何を？</Label>
                   <div className="flex gap-2">
                     <Input
-                      placeholder="例：伝説の剣"
+                      placeholder="例：小さな白い花を一輪"
                       value={story5w1h.whatObject}
                       onChange={(e) => handle5w1hChange("whatObject", e.target.value)}
                       className="bg-background"
@@ -351,7 +399,7 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
                   <Label className="text-sm text-foreground">どうやって？</Label>
                   <div className="flex gap-2">
                     <Input
-                      placeholder="例：古代の魔法で"
+                      placeholder="例：胸の前でそっと包み込むように持ち"
                       value={story5w1h.how}
                       onChange={(e) => handle5w1hChange("how", e.target.value)}
                       className="bg-background"
@@ -373,7 +421,7 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
                   <Label className="text-sm text-foreground">どうした？</Label>
                   <div className="flex gap-2">
                     <Input
-                      placeholder="例：隠された真実を発見する"
+                      placeholder="例：慈しむような優しい笑みでこちらを見た"
                       value={story5w1h.whatHappened}
                       onChange={(e) => handle5w1hChange("whatHappened", e.target.value)}
                       className="bg-background"
@@ -395,8 +443,8 @@ export function PromptInputForm({ onGenerate, isGenerating }: PromptInputFormPro
 
           <Button
             type="submit"
-            className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
-            disabled={isGenerating}
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
+            disabled={isGenerating || !isFormValid()}
             size="lg"
           >
             {isGenerating ? (
