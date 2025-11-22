@@ -22,7 +22,7 @@ export function PromptCreator() {
     atmosphere: string
     theme: string
     colors: string
-    style: string
+    angle: string
     story: string
   }) => {
     const currentLimit = hasWatchedAd ? MAX_TOTAL_GENERATIONS : MAX_FREE_GENERATIONS
@@ -36,10 +36,11 @@ export function PromptCreator() {
 
     setIsGenerating(true)
     // Simulate AI generation
-    const { prompt, negativePrompt } = await generatePrompts(formData)
+    const { prompt, negativePrompt } = await generatePrompts(formData, setIsGenerating)
     setGeneratedPrompt(prompt)
     setGeneratedNegativePrompt(negativePrompt)
     setIsGenerating(false)
+console.log(formData)
 
     {/*const newCount = generationCount + 1
     setGenerationCount(newCount)*/}
@@ -101,28 +102,11 @@ data: {
   atmosphere: string
   theme: string
   colors: string
-  style: string
+  angle: string
   story: string
 },
+isGenerating: boolean
 ): { prompt: string; negativePrompt: string } {
-  const parts = []
-
-  if (data.direction) parts.push(data.direction)
-  if (data.theme) parts.push(`${data.theme} theme`)
-  if (data.atmosphere) parts.push(`${data.atmosphere} atmosphere`)
-  if (data.colors) parts.push(`${data.colors} color palette`)
-  if (data.story) parts.push(data.story)
-  if (data.style) parts.push(`${data.style} style`)
-
-  const qualityTags = [
-    "highly detailed",
-    "professional",
-    "8k resolution",
-    "sharp focus",
-    "masterpiece",
-    "trending on artstation",
-  ]
-
   // FastAPI のエンドポイントを叩く
   const promise = fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/atelier/create`, {
     method: 'POST',
@@ -130,14 +114,18 @@ data: {
       'Content-Type': 'application/json'
     },
     body: JSON.stringify({
-      prompt: "example"
+      direction:   data.direction,
+      atmosphere:  `${data.atmosphere}雰囲気`,
+      theme:       data.theme,
+      colors:      data.colors,
+      angle:       data.angle,
+      story:       data.story,
     })}
     ).then(res => res.json())
   const [response] = await Promise.all([promise])
 
-  const prompt = `${response.prompt}\nBREAK\n${qualityTags.join(", ")}`
-  const negativePrompt =
-    "low quality, blurry, distorted, deformed, ugly, bad anatomy, bad proportions, watermark, signature, text, cropped, out of frame, worst quality, low resolution, jpeg artifacts"
+  const prompt = response.prompt
+  const negativePrompt = response.negativePrompt
 
   return { prompt, negativePrompt }
 }

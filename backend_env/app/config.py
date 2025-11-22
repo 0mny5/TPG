@@ -5,7 +5,7 @@ class Settings(BaseSettings):
     """ 環境変数を読み込む """
     openai_api_key: str # 文字列型でバリデーション
     deepl_api_key: str
-    frontend_urI: str
+    gpt_prompt: str
 
     class Config:
         env_file = "../.env" # .envファイルのパスを指定
