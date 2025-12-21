@@ -1,8 +1,14 @@
 from fastapi import FastAPI
 from config import get_settings  # config.pyから設定をインポート
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 from openai import OpenAI
+from google.oauth2 import id_token
+from google.auth.transport import requests as google_requests
+from redis import Redis
+from schemas.request import Params
+from schemas.user import User
+from services.request_gpt import request_gpt
+from services.count_generating import increment_ai_generate_count
 
 # 設定の取得（New）
 settings = get_settings()

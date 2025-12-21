@@ -4,8 +4,10 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     """ 環境変数を読み込む """
     openai_api_key: str # 文字列型でバリデーション
-    deepl_api_key: str
+    google_client_id: str
+    next_auth_url: str
     gpt_prompt: str
+    daily_limit: int
 
     class Config:
         env_file = "../.env" # .envファイルのパスを指定
