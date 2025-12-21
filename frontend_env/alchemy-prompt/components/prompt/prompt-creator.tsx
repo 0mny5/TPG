@@ -9,7 +9,9 @@ import { toast } from "sonner"
 const MAX_FREE_GENERATIONS = 5
 const MAX_TOTAL_GENERATIONS = 10
 
-export function PromptCreator() {
+export function PromptCreator(
+  { session }: { session: Session | null },
+) {
   const [generatedPrompt, setGeneratedPrompt] = useState("")
   const [generatedNegativePrompt, setGeneratedNegativePrompt] = useState("")
   const [isGenerating, setIsGenerating] = useState(false)
@@ -35,12 +37,10 @@ export function PromptCreator() {
     }
 
     setIsGenerating(true)
-    // Simulate AI generation
-    const { prompt, negativePrompt } = await generatePrompts(formData, setIsGenerating)
+    const { prompt, negativePrompt } = await generatePrompts(session.idToken, formData, setIsGenerating)
     setGeneratedPrompt(prompt)
     setGeneratedNegativePrompt(negativePrompt)
     setIsGenerating(false)
-console.log(formData)
 
     {/*const newCount = generationCount + 1
     setGenerationCount(newCount)*/}
@@ -97,6 +97,7 @@ console.log(formData)
 }
 
 async function generatePrompts(
+idToken: str,
 data: {
   direction: string
   atmosphere: string
@@ -111,7 +112,8 @@ isGenerating: boolean
   const promise = fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/atelier/create`, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${idToken}`,
     },
     body: JSON.stringify({
       direction:   data.direction,
