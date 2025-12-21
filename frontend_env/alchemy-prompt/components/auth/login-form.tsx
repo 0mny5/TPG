@@ -5,19 +5,15 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Loader2 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import { signIn } from "next-auth/react";
 
 export function LoginForm() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
 
   async function handleGoogleLogin() {
-    setIsLoading(true)
 
-    // Simulate Google login
-    setTimeout(() => {
-      setIsLoading(false)
-      router.push("/atelier")
-    }, 1500)
+    signIn("google", { callbackUrl: '/atelier' })
   }
 
   return (
