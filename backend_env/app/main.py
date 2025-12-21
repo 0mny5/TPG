@@ -58,9 +58,7 @@ async def create_prompt(
     sub = payload["sub"]
 
 
-    #response = request_gpt(params, gpt_client)
-    #response["prompt"] = gpt_response["prompt"]
-    #response["negativePrompt"] = gpt_response["negativePrompt"]
+    response = request_gpt(params, gpt_client, settings.gpt_prompt)
 
-    #return response
+    return response
 
