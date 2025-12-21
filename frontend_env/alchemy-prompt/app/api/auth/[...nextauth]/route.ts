@@ -16,6 +16,7 @@ export const authOptions = {
   },
   callbacks: {
     async jwt({ token, account, profile }) {
+      // TODO: imprement refresh token rotation.
       // 初回ログイン時
       if (account && profile) {
         token.idToken = account.id_token;

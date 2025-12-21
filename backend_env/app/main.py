@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Header, HTTPException
 from config import get_settings  # config.pyから設定をインポート
 from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
@@ -31,9 +31,31 @@ app.add_middleware(
 )
 
 @app.post("/atelier/create")
-async def create_prompt(params: Params):
+async def create_prompt(
+    params: Params,
+    authorization: str = Header(None),
+):
+    # 1. Headerに無ければ reject
+    if not authorization:
+        raise HTTPException(status_code=401, detail="Missing Authorization header")
 
+    # 2. Bearer 形式以外は reject
+    if not authorization.startswith("Bearer "):
+        raise HTTPException(status_code=401, detail="Invalid Authorization format")
 
+    token = authorization.replace("Bearer ", "")
+
+    if not token:
+        raise HTTPException(401, "id_token missing")
+
+    # Google署名・aud・exp 検証
+    payload = id_token.verify_oauth2_token(
+        token,
+        google_requests.Request(),
+        settings.google_client_id,
+    )
+
+    sub = payload["sub"]
 
 
     #response = request_gpt(params, gpt_client)

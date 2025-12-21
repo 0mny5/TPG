@@ -9,7 +9,7 @@ export default async function AtelierPage() {
   return (
     <div className="min-h-screen bg-background">
       <div className="px-4 sm:px-6 lg:px-8">
-        <CreateHeader session={session}/>
+        <CreateHeader session={session} />
 
         <div className="container max-w-7xl mx-auto py-4">
           <div className="flex items-center justify-center">
@@ -25,7 +25,7 @@ export default async function AtelierPage() {
         </div>
 
         <main className="container max-w-7xl mx-auto py-8">
-          <PromptCreator />
+          <PromptCreator session={session} />
         </main>
         <LandingFooter isLoggedIn={true} />
       </div>
