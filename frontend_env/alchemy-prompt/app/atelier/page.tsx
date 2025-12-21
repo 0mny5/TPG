@@ -1,12 +1,15 @@
 import { PromptCreator } from "@/components/prompt/prompt-creator"
 import { CreateHeader } from "@/components/prompt/create-header"
 import { LandingFooter } from "@/components/landing/landing-footer"
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
-export default function AtelierPage() {
+export default async function AtelierPage() {
+  const session = await getServerSession(authOptions);
   return (
     <div className="min-h-screen bg-background">
       <div className="px-4 sm:px-6 lg:px-8">
-        <CreateHeader />
+        <CreateHeader session={session}/>
 
         <div className="container max-w-7xl mx-auto py-4">
           <div className="flex items-center justify-center">
