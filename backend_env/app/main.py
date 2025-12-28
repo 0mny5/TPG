@@ -58,7 +58,7 @@ async def create_prompt(
     sub = payload["sub"]
 
 
-    response = request_gpt(params, gpt_client, settings.gpt_prompt)
+    response = request_gpt(params, gpt_client, settings.gpt_prompt, settings.forbidden_words)
 
     return response
 
