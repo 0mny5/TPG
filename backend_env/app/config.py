@@ -7,6 +7,7 @@ class Settings(BaseSettings):
     google_client_id: str
     next_auth_url: str
     gpt_prompt: str
+    forbidden_words: str
     daily_limit: int
 
     class Config:
