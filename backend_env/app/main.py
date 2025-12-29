@@ -33,6 +33,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+@app.post("/atelier/generated-count")
+async def get_generated_count(
+    authorization: str = Header(None),
+):
+    sub = verify_login_user(settings.google_client_id, authorization)
+    key = f"google_{sub}:generate_count"
+    generated_count = await r.get(key)
+    return { "generatedCount": generated_count }
 
 @app.post("/atelier/create")
 async def create_prompt(

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { PromptInputForm } from "./prompt-input-form"
 import { PromptOutput } from "./prompt-output"
 import { AdRewardModal } from "./ad-reward-modal"
@@ -18,6 +18,17 @@ export function PromptCreator(
   const [generationCount, setGenerationCount] = useState(0)
   const [hasWatchedAd, setHasWatchedAd] = useState(false)
   const [showAdModal, setShowAdModal] = useState(false)
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/atelier/generated-count`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${session.idToken}`,
+    },
+    }).then(res => res.json())
+      .then(data => setGenerationCount(data.generatedCount));
+  }, []);
 
   const handleGenerate = async (formData: {
     direction: string
@@ -37,23 +48,20 @@ export function PromptCreator(
     }
 
     setIsGenerating(true)
-    const { prompt, negativePrompt } = await generatePrompts(session.idToken, formData, setIsGenerating)
+    const { prompt, negativePrompt, generateCount } = await generatePrompts(session.idToken, formData, setIsGenerating)
     setGeneratedPrompt(prompt)
     setGeneratedNegativePrompt(negativePrompt)
+    setGenerationCount(generateCount)
     setIsGenerating(false)
 
-    {/*const newCount = generationCount + 1
-    setGenerationCount(newCount)*/}
-    const newCount = 0
-
-    if (newCount === MAX_FREE_GENERATIONS && !hasWatchedAd) {
+    if (generationCount === MAX_FREE_GENERATIONS && !hasWatchedAd) {
       setTimeout(() => {
         setShowAdModal(true)
       }, 1000)
     }
 
     // Show remaining generations
-    const remaining = currentLimit - newCount
+    const remaining = currentLimit - generateCount
     if (remaining > 0) {
       toast.success("プロンプトを錬成しました", {
         description: `残り${remaining}回練成できます`,
@@ -107,7 +115,9 @@ data: {
   story: string
 },
 isGenerating: boolean
-): { prompt: string; negativePrompt: string } {
+): {
+  prompt: string; negativePrompt: string
+} {
   // FastAPI のエンドポイントを叩く
   const promise = fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/atelier/create`, {
     method: 'POST',
@@ -128,6 +138,7 @@ isGenerating: boolean
 
   const prompt = response.prompt
   const negativePrompt = response.negativePrompt
+  const generateCount = response.generateCount
 
-  return { prompt, negativePrompt }
+  return { prompt, negativePrompt, generateCount }
 }
