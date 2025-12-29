@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from openai import OpenAI
 from google.oauth2 import id_token
 from google.auth.transport import requests as google_requests
-from redis import Redis
+from redis.asyncio import Redis
 from schemas.request import Params
 from schemas.user import User
 from services.request_gpt import request_gpt
@@ -18,6 +18,11 @@ origins = [ "*" ]
 # APIクライアントを初期化
 gpt_client = OpenAI(
     api_key=settings.openai_api_key
+)
+r = Redis(
+    host="localhost",
+    port=6379,
+    decode_responses=True
 )
 
 app = FastAPI()
@@ -57,6 +62,7 @@ async def create_prompt(
 
     sub = payload["sub"]
 
+    generate_count = await increment_ai_generate_count(r, sub, settings.daily_limit)
 
     response = request_gpt(params, gpt_client, settings.gpt_prompt, settings.forbidden_words)
 
