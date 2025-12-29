@@ -51,6 +51,7 @@ async def create_prompt(
     generate_count = await increment_ai_generate_count(r, sub, settings.daily_limit)
 
     response = request_gpt(params, gpt_client, settings.gpt_prompt, settings.forbidden_words)
+    response["generateCount"] = generate_count
 
     return response
 
