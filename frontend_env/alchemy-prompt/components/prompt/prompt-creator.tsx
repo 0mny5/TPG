@@ -1,5 +1,6 @@
 "use client"
 
+import { signIn } from "next-auth/react";
 import { useEffect, useState } from "react"
 import { PromptInputForm } from "./prompt-input-form"
 import { PromptOutput } from "./prompt-output"
@@ -20,15 +21,32 @@ export function PromptCreator(
   const [showAdModal, setShowAdModal] = useState(false)
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/atelier/generated-count`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${session.idToken}`,
-    },
-    }).then(res => res.json())
-      .then(data => setGenerationCount(data.generatedCount));
-  }, []);
+    fetchGeneratedCount(session?.idToken)
+  })
+
+  const fetchGeneratedCount = async (token: str) => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/atelier/generated-count`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+
+      if (res.status === 401) {
+        signIn("google", { callbackUrl: "/atelier" })
+        throw new Error("生成エラー: 認証が必要です。")
+        return
+      }
+
+      const data = await res.json()
+      setGenerationCount(data.generatedCount)
+    } catch (e) {}
+  }
 
   const handleGenerate = async (formData: {
     direction: string
@@ -48,7 +66,7 @@ export function PromptCreator(
     }
 
     setIsGenerating(true)
-    const { prompt, negativePrompt, generateCount } = await generatePrompts(session.idToken, formData, setIsGenerating)
+    const { prompt, negativePrompt, generateCount } = await generatePrompts(session.idToken, formData)
     setGeneratedPrompt(prompt)
     setGeneratedNegativePrompt(negativePrompt)
     setGenerationCount(generateCount)
@@ -104,6 +122,12 @@ export function PromptCreator(
   )
 }
 
+type GenerateResult = {
+  prompt: string
+  negativePrompt: string
+  generateCount: string
+}
+
 async function generatePrompts(
 idToken: str,
 data: {
@@ -114,31 +138,29 @@ data: {
   angle: string
   story: string
 },
-isGenerating: boolean
-): {
-  prompt: string; negativePrompt: string
-} {
+): Promise<GenerateResult> {
   // FastAPI のエンドポイントを叩く
-  const promise = fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/atelier/create`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${idToken}`,
-    },
-    body: JSON.stringify({
-      direction:   data.direction,
-      atmosphere:  `${data.atmosphere}雰囲気`,
-      theme:       data.theme,
-      colors:      data.colors,
-      angle:       data.angle,
-      story:       data.story,
-    })}
-    ).then(res => res.json())
-  const [response] = await Promise.all([promise])
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/atelier/create`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${idToken}`,
+      },
+      body: JSON.stringify({
+        ...data,
+        atmosphere:  `${data.atmosphere}雰囲気`,
+      })
+    }).then(res => res.json())
 
-  const prompt = response.prompt
-  const negativePrompt = response.negativePrompt
-  const generateCount = response.generateCount
+    if (response.status === 401) {
+      signIn("google", { callbackUrl: "/atelier" })
+      throw new Error("生成エラー: 認証が必要です。")
+      return
+    }
 
-  return { prompt, negativePrompt, generateCount }
+    return { 
+      prompt: response.prompt,
+      negativePrompt: response.negativePrompt,
+      generateCount: response.generateCount
+    }
 }
