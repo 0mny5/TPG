@@ -22,6 +22,9 @@ export const metadata: Metadata = {
   title: "Alchemy Prompts - 錬金術プロンプト生成",
   description: "Stable Diffusion向けの高品質な英語プロンプトを自動生成",
   generator: "v0.app",
+  icons: {
+    icon: '/favicon.ico',
+  },
 }
 
 export default function RootLayout({
