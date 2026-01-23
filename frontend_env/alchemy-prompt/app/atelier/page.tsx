@@ -11,6 +11,7 @@ export default async function AtelierPage() {
       <div className="px-4 sm:px-6 lg:px-8">
         <CreateHeader session={session} />
 
+{/*
         <div className="container max-w-7xl mx-auto py-4">
           <div className="flex items-center justify-center">
             <div className="w-full max-w-[728px] h-[90px] bg-muted/30 border-2 border-dashed border-border rounded-lg flex items-center justify-center">
@@ -23,6 +24,7 @@ export default async function AtelierPage() {
             </div>
           </div>
         </div>
+*/}
 
         <main className="container max-w-7xl mx-auto py-8">
           <PromptCreator session={session} />

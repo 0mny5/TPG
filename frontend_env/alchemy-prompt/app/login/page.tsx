@@ -19,18 +19,10 @@ export default function LoginPage() {
             </div>
             <span className="text-2xl font-bold text-primary">Alchemy Prompts</span>
           </Link>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Welcome Back</h1>
-          <p className="text-muted-foreground">Enter the alchemist's workshop</p>
+          <h1 className="text-3xl font-bold text-foreground mb-2">おかえりなさい！</h1>
+          <p className="text-muted-foreground">さあ、イメージを膨らませる旅に出ましょう</p>
         </div>
-
         <LoginForm />
-
-        <p className="mt-6 text-center text-sm text-muted-foreground">
-          Don't have an account?{" "}
-          <Link href="/signup" className="text-primary hover:underline font-medium">
-            Create one now
-          </Link>
-        </p>
       </div>
     </div>
   )
