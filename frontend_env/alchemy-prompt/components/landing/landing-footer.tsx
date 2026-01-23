@@ -72,7 +72,7 @@ export function LandingFooter({ isLoggedIn = false }: LandingFooterProps) {
                 {isLoggedIn && (
                   <li>
                     <button
-                      onClick={() => setIsContactModalOpen(true)}
+                      onClick={() => setIsContactModalOpen(false)}
                       className="text-muted-foreground hover:text-foreground transition-colors"
                     >
                       お問い合わせ
@@ -84,7 +84,7 @@ export function LandingFooter({ isLoggedIn = false }: LandingFooterProps) {
           </div>
 
           <div className="mt-12 pt-8 border-t border-border/40 text-center text-sm text-muted-foreground">
-            <p>&copy; 2025 Alchemy Prompts. All rights reserved.</p>
+            <p>&copy; 2026 Alchemy Prompts. All rights reserved.</p>
           </div>
         </div>
       </footer>
