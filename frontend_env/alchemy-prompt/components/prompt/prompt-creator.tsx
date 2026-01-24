@@ -6,6 +6,7 @@ import { PromptInputForm } from "./prompt-input-form"
 import { PromptOutput } from "./prompt-output"
 import { AdRewardModal } from "./ad-reward-modal"
 import { toast } from "sonner"
+import type { Session } from "next-auth";
 
 const MAX_FREE_GENERATIONS = 5
 const MAX_TOTAL_GENERATIONS = 10
