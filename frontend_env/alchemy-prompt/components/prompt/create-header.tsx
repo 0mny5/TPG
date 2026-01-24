@@ -4,6 +4,7 @@ import { Sparkles } from "lucide-react"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { signOut } from "next-auth/react";
+import type { Session } from "next-auth";
 
 export function CreateHeader(
   { session }: { session: Session | null },

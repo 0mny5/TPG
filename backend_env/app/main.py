@@ -12,8 +12,6 @@ from services.verify_login_user import verify_login_user
 # 設定の取得（New）
 settings = get_settings()
 
-origins = [ "*" ]
-
 # APIクライアントを初期化
 gpt_client = OpenAI(
     api_key=settings.openai_api_key
@@ -28,7 +26,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # 本番では限定推奨
+    allow_origins=settings.cors_origin,  # 本番では限定推奨
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

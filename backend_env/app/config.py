@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings
 
 class Settings(BaseSettings):
     """ 環境変数を読み込む """
+    cors_origin: str
     openai_api_key: str # 文字列型でバリデーション
     google_client_id: str
     next_auth_url: str
