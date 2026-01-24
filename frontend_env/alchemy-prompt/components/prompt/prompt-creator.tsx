@@ -25,7 +25,7 @@ export function PromptCreator(
     fetchGeneratedCount(session?.idToken)
   })
 
-  const fetchGeneratedCount = async (token: string) => {
+  const fetchGeneratedCount = async (token: string | undefined) => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/atelier/generated-count`,
@@ -67,7 +67,7 @@ export function PromptCreator(
     }
 
     setIsGenerating(true)
-    const { prompt, negativePrompt, generateCount } = await generatePrompts(session.idToken, formData)
+    const { prompt, negativePrompt, generateCount } = await generatePrompts(session?.idToken, formData)
     setGeneratedPrompt(prompt)
     setGeneratedNegativePrompt(negativePrompt)
     setGenerationCount(generateCount)
@@ -124,13 +124,13 @@ export function PromptCreator(
 }
 
 type GenerateResult = {
-  prompt: string
-  negativePrompt: string
-  generateCount: string
+  prompt: string,
+  negativePrompt: string,
+  generateCount: number
 }
 
 async function generatePrompts(
-idToken: str,
+idToken: string | undefined,
 data: {
   direction: string
   atmosphere: string
@@ -153,10 +153,13 @@ data: {
       })
     }).then(res => res.json())
 
+    if (!response) {
+      throw new Error("生成エラー: 生成に失敗しました。")
+    }
+
     if (response.status === 401) {
       signIn("google", { callbackUrl: "/atelier" })
       throw new Error("生成エラー: 認証が必要です。")
-      return
     }
 
     return { 
