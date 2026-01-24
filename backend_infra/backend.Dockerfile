@@ -3,5 +3,5 @@ RUN apt-get update && apt-get install -y \
     redis-server \
     systemctl
 RUN systemctl enable redis-server
-COPY backend_infra/requirements.txt requirements.txt
+COPY backend_env/requirements.txt requirements.txt
 RUN pip install -r requirements.txt
