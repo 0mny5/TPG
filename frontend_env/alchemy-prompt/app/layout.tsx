@@ -1,7 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Noto_Serif_JP, Noto_Sans_JP } from "next/font/google"
-import { Analytics } from "@vercel/analytics/next"
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css"
 import { Suspense } from "react"
 import { Toaster } from "sonner"
@@ -37,7 +37,9 @@ export default function RootLayout({
       <body className={`font-sans ${notoSansJP.variable} ${notoSerifJP.variable} antialiased`}>
         <Suspense fallback={null}>
           {children}
-          <Analytics />
+          {process.env.GOOGLE_ANALYTICS_ID && (
+            <GoogleAnalytics gaId={process.env.GOOGLE_ANALYTICS_ID} />
+          )}
         </Suspense>
         <Toaster
           position="top-right"
