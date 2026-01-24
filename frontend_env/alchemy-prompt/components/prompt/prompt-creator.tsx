@@ -25,7 +25,7 @@ export function PromptCreator(
     fetchGeneratedCount(session?.idToken)
   })
 
-  const fetchGeneratedCount = async (token: str) => {
+  const fetchGeneratedCount = async (token: string) => {
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_ENDPOINT}/atelier/generated-count`,
