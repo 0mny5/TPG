@@ -2,7 +2,7 @@ import { PromptCreator } from "@/components/prompt/prompt-creator"
 import { CreateHeader } from "@/components/prompt/create-header"
 import { LandingFooter } from "@/components/landing/landing-footer"
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 
 export default async function AtelierPage() {
   const session = await getServerSession(authOptions);
