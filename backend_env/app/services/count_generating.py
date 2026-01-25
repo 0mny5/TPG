@@ -19,8 +19,7 @@ async def increment_ai_generate_count(
 ):
     key = f"google_{user}:generate_count"
 
-    #count = await redis_client.incr(key)
-    count = 2
+    count = await redis_client.incr(key)
 
     if count == 1:
         await redis_client.expire(key, seconds_until_midnight())
