@@ -18,6 +18,9 @@ def verify_login_user(
 
     if not token:
         raise HTTPException(401, "id_token missing")
+    print("Authorization:", token)
+    print("Token length:", len(token))
+
 
     # Google署名・aud・exp 検証
     try:
