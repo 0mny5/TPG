@@ -1,3 +1,4 @@
+import os
 from fastapi import FastAPI, Header, HTTPException
 from config import get_settings  # config.pyから設定をインポート
 from fastapi.middleware.cors import CORSMiddleware
@@ -16,11 +17,11 @@ settings = get_settings()
 gpt_client = OpenAI(
     api_key=settings.openai_api_key
 )
-r = Redis(
-    host="localhost",
-    port=6379,
-    decode_responses=True
-)
+
+if os.getenv("ENV") == "production":
+    r = Redis.from_url(os.getenv("REDIS_URL"), decode_responses=True)
+else:
+    r = Redis(host="localhost", port=6379, decode_responses=True)
 
 app = FastAPI()
 
