@@ -108,7 +108,7 @@ export function PromptCreator(
         </p>
         <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20">
           <span className="text-sm font-medium text-foreground">
-            残り練成回数: <span className="text-primary font-bold">{remainingGenerations}</span> / {currentLimit}
+            本日の残り練成回数: <span className="text-primary font-bold">{remainingGenerations}</span> / {currentLimit}
           </span>
         </div>
       </div>
